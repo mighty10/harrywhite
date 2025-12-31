@@ -1,67 +1,66 @@
 <!doctype html>
-<html lang="en">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="harrywhite - Premium design platform offering graphic design, web development, UI/UX, branding, and product visualization services">
-  <title>harrywhite | Beauty in Every Detail</title>
-  
-  <!-- Header logo as fallback favicon -->
-  <link rel="icon" type="image/png" href="/dest/hero-img.png">
-  <link rel="apple-touch-icon" href="/dest/hero-img.png">
-  <script src="/_sdk/element_sdk.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&amp;display=swap" rel="stylesheet">
-  <style>
-    body {
-      box-sizing: border-box;
-    }
+    let isMusicPlaying = false;
+
+    // Set volume to mild (30%)
+    bgMusic.volume = 0.3;
+
+    // Add error handler
+    bgMusic.addEventListener('error', (e) => {
+      console.error('Audio loading error:', e);
+      musicToggle.style.opacity = '0.5';
+    });
+
+    const attemptPlay = (unmuteAfter = false) => {
+      const playPromise = bgMusic.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          if (unmuteAfter) {
+            bgMusic.muted = false;
+          }
+          isMusicPlaying = true;
+          musicToggle.classList.remove('muted');
+        }).catch(err => {
+          console.log('Autoplay prevented:', err);
+          musicToggle.classList.add('muted');
+        });
+      }
+    };
+
+    // Try to autoplay muted, then unmute if allowed
+    const playMusicAuto = () => {
+      bgMusic.muted = true;
+      attemptPlay(true);
+    };
+
+    // Attempt autoplay on page load
+    window.addEventListener('load', () => {
+      setTimeout(playMusicAuto, 500);
+    });
     
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    // Ensure music plays on first user interaction
+    const userStart = () => {
+      if (!isMusicPlaying) {
+        bgMusic.muted = false;
+        attemptPlay(false);
+      }
+    };
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-    }
+    document.addEventListener('pointerdown', userStart, { once: true });
+    document.addEventListener('click', userStart, { once: true });
+    document.addEventListener('touchstart', userStart, { once: true });
 
-    section[id] {
-      scroll-margin-top: 120px;
-    }
-
-   
-    body {
-      font-family: 'Bangers', 'Comic Sans MS', cursive, sans-serif;
-      background: #000000;
-      color: #ffffff;
-      line-height: 1.6;
-      overflow-y: auto;
-    }
-
-    .app-wrapper {
-      width: 100%;
-      min-height: 100%;
-      position: relative;
-      background: #000000;
-    }
-
-    .space-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000000;
-      z-index: 0;
-      overflow: hidden;
-      perspective: 1000px;
-    }
-
+    // Toggle music on button click
+    musicToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!bgMusic.paused && isMusicPlaying) {
+        bgMusic.pause();
+        isMusicPlaying = false;
+        musicToggle.classList.add('muted');
+      } else {
+        bgMusic.muted = false;
+        attemptPlay(false);
+      }
+    });
     #starfield-canvas {
       position: absolute;
       top: 0;
@@ -1700,7 +1699,7 @@
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
  </head>
  <body>
-  <audio id="bgMusic" loop style="display: none;" preload="auto">
+  <audio id="bgMusic" loop style="display: none;" preload="auto" autoplay muted playsinline>
     <source src="./dest/i1.mp3" type="audio/mpeg">
   </audio>
   <button id="musicToggle" class="music-toggle" title="Toggle music">
@@ -2155,6 +2154,18 @@ Click Gmail, share your requirements, and we will reach out to you soon.
               }
             }
           });
+
+          // Direct handlers for CTA/contact buttons to ensure scrolling works on mobile
+          const contactTarget = document.getElementById('contact');
+          if (contactTarget) {
+            document.querySelectorAll('a[href="#contact"]').forEach((el) => {
+              el.addEventListener('click', (e) => {
+                e.preventDefault();
+                contactTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                window.history.pushState(null, '', '#contact');
+              });
+            });
+          }
       }
     });
 
