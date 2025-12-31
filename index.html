@@ -2082,8 +2082,8 @@ Click Gmail, share your requirements, and we will reach out to you soon.
     const musicToggle = document.getElementById('musicToggle');
     let isMusicPlaying = false;
 
-    // Set volume to very quiet (10%)
-    bgMusic.volume = 0.1;
+    // Set volume to mild (30%)
+    bgMusic.volume = 0.3;
 
     // Add error handler
     bgMusic.addEventListener('error', (e) => {
@@ -2141,6 +2141,20 @@ Click Gmail, share your requirements, and we will reach out to you soon.
           isMusicPlaying = true;
           musicToggle.classList.remove('muted');
         }).catch(err => console.error('Play error:', err));
+
+          // Fix anchor navigation for mobile
+          document.addEventListener('click', (e) => {
+            const link = e.target.closest('a[href^="#"]');
+            if (link) {
+              const targetId = link.getAttribute('href').substring(1);
+              const targetElement = document.getElementById(targetId);
+              if (targetElement) {
+                e.preventDefault();
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                window.history.pushState(null, '', '#' + targetId);
+              }
+            }
+          });
       }
     });
 
