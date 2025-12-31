@@ -79,6 +79,7 @@
       height: 100%;
       pointer-events: none;
       opacity: 0.15;
+      display: none;
     }
 
     .nav-bar {
@@ -485,6 +486,44 @@
       z-index: 2;
     }
 
+
+    /* Text reveal animations for cards */
+    .portfolio-info,
+    .service-card .service-description,
+    .timeline-card .timeline-text,
+    .team-card .team-bio,
+    .faq-answer-text,
+    .contact-container .form-group,
+    .cta-content .cta-subtitle {
+      opacity: 0.92;
+      transform: translateY(10px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .portfolio-card:hover .portfolio-info,
+    .service-card:hover .service-description,
+    .timeline-card:hover .timeline-text,
+    .team-card:hover .team-bio,
+    .faq-item.active .faq-answer-text,
+    .contact-container:hover .form-group,
+    .cta-content:hover .cta-subtitle {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .portfolio-info,
+      .service-card .service-description,
+      .timeline-card .timeline-text,
+      .team-card .team-bio,
+      .faq-answer-text,
+      .contact-container .form-group,
+      .cta-content .cta-subtitle {
+        transition: none;
+        transform: none;
+        opacity: 1;
+      }
+    }
     .portfolio-card::before {
       top: 12px;
       right: 14px;
@@ -1611,7 +1650,7 @@
    </div>
    <nav class="nav-bar">
     <div class="nav-logo" id="navLogo">
-     hw
+     HarryWhite
     </div>
     <ul class="nav-links">
      <li><a href="#portfolio">Our Work</a></li>
@@ -2114,7 +2153,7 @@ Click Gmail, share your requirements, and we will reach out to you soon.
       
       const navLogoEl = document.getElementById('navLogo');
       if (navLogoEl) {
-        navLogoEl.textContent = 'hw';
+        navLogoEl.textContent = config.brand_name || defaultConfig.brand_name || '';
       }
       
       const taglineEl = document.getElementById('tagline');
@@ -2384,7 +2423,7 @@ Click Gmail, share your requirements, and we will reach out to you soon.
       class Logo3D {
         constructor() { this.particles = []; this.initParticles(); }
         initParticles() {
-          const text = "HW";
+          const text = (defaultConfig.brand_name || 'HarryWhite').slice(0, 10).toUpperCase();
           const fontSize = 450;
           const tempCanvas = document.createElement('canvas');
           const tempCtx = tempCanvas.getContext('2d');
