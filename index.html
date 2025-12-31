@@ -2140,34 +2140,34 @@ Click Gmail, share your requirements, and we will reach out to you soon.
           isMusicPlaying = true;
           musicToggle.classList.remove('muted');
         }).catch(err => console.error('Play error:', err));
-
-          // Fix anchor navigation for mobile
-          document.addEventListener('click', (e) => {
-            const link = e.target.closest('a[href^="#"]');
-            if (link) {
-              const targetId = link.getAttribute('href').substring(1);
-              const targetElement = document.getElementById(targetId);
-              if (targetElement) {
-                e.preventDefault();
-                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                window.history.pushState(null, '', '#' + targetId);
-              }
-            }
-          });
-
-          // Direct handlers for CTA/contact buttons to ensure scrolling works on mobile
-          const contactTarget = document.getElementById('contact');
-          if (contactTarget) {
-            document.querySelectorAll('a[href="#contact"]').forEach((el) => {
-              el.addEventListener('click', (e) => {
-                e.preventDefault();
-                contactTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                window.history.pushState(null, '', '#contact');
-              });
-            });
-          }
       }
     });
+
+    // Fix anchor navigation for mobile
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[href^="#"]');
+      if (link) {
+        const targetId = link.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          e.preventDefault();
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          window.history.pushState(null, '', '#' + targetId);
+        }
+      }
+    });
+
+    // Direct handlers for CTA/contact buttons to ensure scrolling works on mobile
+    const contactTarget = document.getElementById('contact');
+    if (contactTarget) {
+      document.querySelectorAll('a[href="#contact"]').forEach((el) => {
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          contactTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          window.history.pushState(null, '', '#contact');
+        });
+      });
+    }
 
     const defaultConfig = {
       background_color: '#000000',
